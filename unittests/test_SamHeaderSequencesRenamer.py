@@ -23,7 +23,12 @@ class TestMain(TestCase):
                 open('TestMaterial/expected_main_availability_check.txt') as expected_file:
             result = result_file.read()
             expected = expected_file.read()
-            self.assertEqual(expected, result)
+
+            if result == expected:
+                return
+            with open('TestMaterial/expected_main_availability_check_variant2.txt') as expected_file_variant:
+                expected_variant = expected_file_variant.read()
+                self.assertEqual(expected_variant, result)
 
     def test_check_availability_empty(self):
         sys.argv = [
