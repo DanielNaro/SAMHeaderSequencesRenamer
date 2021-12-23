@@ -1,4 +1,4 @@
-from collections import Set
+from typing import Set
 from unittest import TestCase
 
 from SamHeaderSequencesRenamerUtils import SamHeaderSequencesRenamerUtils
