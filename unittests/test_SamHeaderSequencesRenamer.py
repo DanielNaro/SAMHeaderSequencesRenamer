@@ -20,11 +20,15 @@ class TestMain(TestCase):
         SamHeaderSequencesRenamer()
 
         with open('TestOutputs/main_availability_check.txt') as result_file, \
-                open('TestMaterial/expected_main_availability_check.txt') as expected_file:
+                open('TestMaterial/expected_main_availability_check_variant.txt') as expected_file:
             result = result_file.read()
             expected = expected_file.read()
 
-            self.assertEqual(expected, result)
+            if result == expected:
+                return
+            with open('TestMaterial/expected_main_availability_check_variant2.txt') as expected_file_variant2:
+                expected_variant = expected_file_variant2.read()
+                self.assertEqual(expected_variant, result)
 
     def test_check_availability_empty(self):
         sys.argv = [
