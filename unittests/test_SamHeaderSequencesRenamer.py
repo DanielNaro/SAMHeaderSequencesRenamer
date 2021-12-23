@@ -20,7 +20,7 @@ class TestMain(TestCase):
         SamHeaderSequencesRenamer()
 
         with open('TestOutputs/main_availability_check.txt') as result_file, \
-                open('TestMaterial/expected_main_availability_check.txt') as expected_file:
+                open('TestMaterial/expected_main_availability_check_variant2.txt') as expected_file:
             result = result_file.read()
             expected = expected_file.read()
 
