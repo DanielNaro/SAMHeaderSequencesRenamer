@@ -42,6 +42,7 @@ class TestMain(TestCase):
 
             if result == expected:
                 return
+
             with open('TestMaterial/expected_main_availability_empty_response_variant2.txt') as expected_file_variant2:
                 expected_variant = expected_file_variant2.read()
                 self.assertEqual(expected_variant, result)
