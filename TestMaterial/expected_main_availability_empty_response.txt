@@ -1,0 +1,2 @@
+usage: samHeaderSequencesRenamer [-h] -t TRANSLATIONS -a AVAILABILITY [-o OUTPUT]
+samHeaderSequencesRenamer: error: the following arguments are required: -t/--translations, -a/--availability

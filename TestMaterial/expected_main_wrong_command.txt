@@ -1,0 +1,14 @@
+Unrecognized command
+usage: samHeaderSequencesRenamer <command> [<args>]
+
+The commands are:
+   check_availability_sequences     Compare possible translations result to a list of availability
+   translate                        Performs translation of SAM header
+
+In process
+
+positional arguments:
+  command     Subcommand to run
+
+optional arguments:
+  -h, --help  show this help message and exit

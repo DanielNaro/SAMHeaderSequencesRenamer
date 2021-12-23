@@ -1,0 +1,1 @@
+ coverage run --source=. -m unittest discover -s unittests/ && coverage report
