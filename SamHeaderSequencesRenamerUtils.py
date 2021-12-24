@@ -44,7 +44,7 @@ class SamHeaderSequencesRenamerUtils:
                     return '', None
                 elements[i] = "SN:" + new_sequence_name
         if new_sequence_name is None:
-            print("line \"" + line + "\" is missing sequence name", file = sys.stderr)
+            print("line \"" + line + "\" is missing sequence name", file=sys.stderr)
             exit(2)
         return '\t'.join(elements) + '\n', new_sequence_name
 
