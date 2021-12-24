@@ -1,0 +1,19 @@
+name: Docker Image CI
+
+on:
+  push:
+    tags: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+    - name: Build the Docker image
+      run: docker build . --file Docker/Dockerfile --tag danielnaro/samHeaderSequencesRenamer:${{ steps.get_version.outputs.VERSION }} --tag danielnaro/samHeaderSequencesRenamer:latest
