@@ -110,5 +110,9 @@ class TestMain(TestCase):
         with open('TestMaterial/expected_main_wrong_command.txt') as expected_file:
             result = out.getvalue().strip()
             expected = expected_file.read()
-            self.assertEqual(expected, result)
+            if expected == result:
+                return
+            else:
+                with open('TestMaterial/expected_main_wrong_command_variant.txt') as expected_file_variant:
+                    self.assertEqual(expected_file_variant.read(), result)
 
