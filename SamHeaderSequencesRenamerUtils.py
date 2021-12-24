@@ -1,4 +1,5 @@
-from typing import Dict, Set, TextIO, Tuple
+import sys
+from typing import Dict, Set, TextIO, Tuple, Optional
 
 from utils import read_translations, read_available_sequences
 
@@ -29,20 +30,36 @@ class SamHeaderSequencesRenamerUtils:
             return sequence_name, False
 
     @staticmethod
-    def get_line_translation(line: str, translations: Dict[str, str]) -> str:
+    def get_line_translation(line: str, translations: Dict[str, str]) -> Tuple[str, Optional[str]]:
         if not line.startswith('@SQ'):
-            return line
+            return line, None
         elements = line.split()
+        new_sequence_name = None
         for i in range(len(elements)):
             element = elements[i]
             if element.startswith("SN:"):
-                new_sequence_name, trustworthy = SamHeaderSequencesRenamerUtils.get_translation(elements[i][3:], translations)
+                new_sequence_name, trustworthy = SamHeaderSequencesRenamerUtils.get_translation(elements[i][3:],
+                                                                                                translations)
                 if not trustworthy:
-                    return ''
+                    return '', None
                 elements[i] = "SN:" + new_sequence_name
-        return '\t'.join(elements) + '\n'
+        if new_sequence_name is None:
+            print("line \"" + line + "\" is missing sequence name", file = sys.stderr)
+            exit(2)
+        return '\t'.join(elements) + '\n', new_sequence_name
 
     @staticmethod
-    def get_header_translation(file_input: TextIO, file_output: TextIO, translations: Dict[str, str]):
+    def get_header_translation(
+            file_input: TextIO,
+            file_output: TextIO,
+            translations: Dict[str, str],
+            to_keep_file: Optional[TextIO] = None):
+        to_keep = []
         for line in file_input:
-            file_output.write(SamHeaderSequencesRenamerUtils.get_line_translation(line, translations))
+            new_line, optional_sequence_to_keep = SamHeaderSequencesRenamerUtils.get_line_translation(line,
+                                                                                                      translations)
+            file_output.write(new_line)
+            if optional_sequence_to_keep is not None:
+                to_keep.append(optional_sequence_to_keep)
+        if to_keep_file is not None:
+            to_keep_file.write(' '.join(to_keep))
