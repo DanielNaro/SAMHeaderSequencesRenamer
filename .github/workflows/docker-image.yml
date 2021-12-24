@@ -2,7 +2,8 @@ name: Docker Image CI
 
 on:
   push:
-    tags: [ master ]
+    tags:        
+      - v*
 
 jobs:
 
@@ -16,4 +17,4 @@ jobs:
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
     - name: Build the Docker image
-      run: docker build . --file Docker/Dockerfile --tag danielnaro/samHeaderSequencesRenamer:${{ steps.get_version.outputs.VERSION }} --tag danielnaro/samHeaderSequencesRenamer:latest
+      run: docker build . --file Docker/Dockerfile --tag danielnaro/sam-header-sequences-renamer:${{ steps.get_version.outputs.VERSION }} --tag danielnaro/sam-header-sequences-renamer:latest
