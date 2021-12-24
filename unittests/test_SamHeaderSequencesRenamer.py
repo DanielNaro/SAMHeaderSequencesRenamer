@@ -83,6 +83,33 @@ class TestMain(TestCase):
             expected = expected_file.read()
             self.assertEqual(expected, result)
 
+    def test_check_translate_keep(self):
+        sys.argv = [
+            'samHeaderSequencesRenamer',
+            'translate',
+            '-t',
+            'TestMaterial/test_translations.txt',
+            '-i',
+            'TestMaterial/header.txt',
+            '-o',
+            'TestOutputs/header_command_translation.txt',
+            '-k',
+            'TestOutputs/keep_command_translation.txt'
+        ]
+        SamHeaderSequencesRenamer()
+
+        with open('TestOutputs/header_command_translation.txt') as result, \
+                open('TestMaterial/expected_translated_header.txt') as expected_file:
+            result = result.read()
+            expected = expected_file.read()
+            self.assertEqual(expected, result)
+
+        with open('TestOutputs/keep_command_translation.txt') as result, \
+                open('TestMaterial/expected_to_keep.txt') as expected_file:
+            result = result.read()
+            expected = expected_file.read()
+            self.assertEqual(expected, result)
+
     def test_check_empty(self):
         sys.argv = [
             'samHeaderSequencesRenamer'
