@@ -50,9 +50,9 @@ The commands are:
     def translate():
         parser = argparse.ArgumentParser(
             description='Performs translation of SAM header')
-        parser.add_argument('-t', '--translations')
-        parser.add_argument('-i', '--input')
-        parser.add_argument('-o', '--output')
+        parser.add_argument('-t', '--translations', required=True)
+        parser.add_argument('-i', '--input', required=True)
+        parser.add_argument('-o', '--output', required=True)
         args = vars(parser.parse_args(sys.argv[2:]))
 
         translations = read_translations(args['translations'])

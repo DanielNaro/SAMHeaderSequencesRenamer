@@ -24,14 +24,14 @@ class TestSamHeaderSequencesRenamer(TestCase):
 
     def test_get_translation(self):
         self.assertEqual(
-            "chr2",
+            ("chr2", True),
             SamHeaderSequencesRenamerUtils.get_translation(
                 '2',
                 {'2': 'chr2'}
             )
         )
         self.assertEqual(
-            "22",
+            ("22",False),
             SamHeaderSequencesRenamerUtils.get_translation(
                 '22',
                 {'2': 'chr2'}

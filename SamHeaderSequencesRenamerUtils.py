@@ -1,4 +1,4 @@
-from typing import Dict, Set, TextIO
+from typing import Dict, Set, TextIO, Tuple
 
 from utils import read_translations, read_available_sequences
 
@@ -22,11 +22,11 @@ class SamHeaderSequencesRenamerUtils:
         return SamHeaderSequencesRenamerUtils.get_non_available_sequences(translations, available_sequences)
 
     @staticmethod
-    def get_translation(sequence_name: str, translations: Dict[str, str]) -> str:
+    def get_translation(sequence_name: str, translations: Dict[str, str]) -> Tuple[str, bool]:
         if sequence_name in translations:
-            return translations[sequence_name]
+            return translations[sequence_name], True
         else:
-            return sequence_name
+            return sequence_name, False
 
     @staticmethod
     def get_line_translation(line: str, translations: Dict[str, str]) -> str:
@@ -36,7 +36,10 @@ class SamHeaderSequencesRenamerUtils:
         for i in range(len(elements)):
             element = elements[i]
             if element.startswith("SN:"):
-                elements[i] = "SN:" + SamHeaderSequencesRenamerUtils.get_translation(elements[i][3:], translations)
+                new_sequence_name, trustworthy = SamHeaderSequencesRenamerUtils.get_translation(elements[i][3:], translations)
+                if not trustworthy:
+                    return ''
+                elements[i] = "SN:" + new_sequence_name
         return '\t'.join(elements) + '\n'
 
     @staticmethod
