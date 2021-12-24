@@ -8,7 +8,7 @@ from unittests.capture_output import captured_output
 class TestMain(TestCase):
     def test_check_availability_sequences_with_output(self):
         sys.argv = [
-            '/home/dnaro/PycharmProjects/SAMHeaderSequencesRenamer/main.py',
+            'samHeaderSequencesRenamer',
             'check_availability_sequences',
             '-t',
             'TestMaterial/test_translations.txt',
@@ -28,7 +28,7 @@ class TestMain(TestCase):
 
     def test_check_availability_empty(self):
         sys.argv = [
-            '/home/dnaro/PycharmProjects/SAMHeaderSequencesRenamer/samHeaderSequencesRenamer',
+            'samHeaderSequencesRenamer',
             'check_availability_sequences'
         ]
         with self.assertRaises(SystemExit) as cm:
@@ -49,7 +49,7 @@ class TestMain(TestCase):
 
     def test_check_availability_sequences(self):
         sys.argv = [
-            '/home/dnaro/PycharmProjects/SAMHeaderSequencesRenamer/main.py',
+            'samHeaderSequencesRenamer',
             'check_availability_sequences',
             '-t',
             'TestMaterial/test_translations.txt',
@@ -66,7 +66,7 @@ class TestMain(TestCase):
 
     def test_check_translate(self):
         sys.argv = [
-            '/home/dnaro/PycharmProjects/SAMHeaderSequencesRenamer/main.py',
+            'samHeaderSequencesRenamer',
             'translate',
             '-t',
             'TestMaterial/test_translations.txt',
@@ -83,9 +83,36 @@ class TestMain(TestCase):
             expected = expected_file.read()
             self.assertEqual(expected, result)
 
+    def test_check_translate_keep(self):
+        sys.argv = [
+            'samHeaderSequencesRenamer',
+            'translate',
+            '-t',
+            'TestMaterial/test_translations.txt',
+            '-i',
+            'TestMaterial/header.txt',
+            '-o',
+            'TestOutputs/header_command_translation.txt',
+            '-k',
+            'TestOutputs/keep_command_translation.txt'
+        ]
+        SamHeaderSequencesRenamer()
+
+        with open('TestOutputs/header_command_translation.txt') as result, \
+                open('TestMaterial/expected_translated_header.txt') as expected_file:
+            result = result.read()
+            expected = expected_file.read()
+            self.assertEqual(expected, result)
+
+        with open('TestOutputs/keep_command_translation.txt') as result, \
+                open('TestMaterial/expected_to_keep.txt') as expected_file:
+            result = result.read()
+            expected = expected_file.read()
+            self.assertEqual(expected, result)
+
     def test_check_empty(self):
         sys.argv = [
-            '/home/dnaro/PycharmProjects/SAMHeaderSequencesRenamer/main.py'
+            'samHeaderSequencesRenamer'
         ]
         with self.assertRaises(SystemExit) as cm:
             with captured_output() as (out, err):
@@ -99,7 +126,7 @@ class TestMain(TestCase):
 
     def test_unknown_command(self):
         sys.argv = [
-            '/home/dnaro/PycharmProjects/SAMHeaderSequencesRenamer/samHeaderSequencesRenamer',
+            'samHeaderSequencesRenamer',
             'test'
         ]
         with self.assertRaises(SystemExit) as cm:
@@ -115,4 +142,3 @@ class TestMain(TestCase):
             else:
                 with open('TestMaterial/expected_main_wrong_command_variant.txt') as expected_file_variant:
                     self.assertEqual(expected_file_variant.read(), result)
-

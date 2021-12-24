@@ -3,4 +3,4 @@ usage: samHeaderSequencesRenamer <command> [<args>]
 The commands are:
    check_availability_sequences     Compare possible translations result to a list of availability
    translate                        Performs translation of SAM header
-main.py: error: the following arguments are required: command
+samHeaderSequencesRenamer: error: the following arguments are required: command

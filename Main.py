@@ -50,15 +50,22 @@ The commands are:
     def translate():
         parser = argparse.ArgumentParser(
             description='Performs translation of SAM header')
-        parser.add_argument('-t', '--translations')
-        parser.add_argument('-i', '--input')
-        parser.add_argument('-o', '--output')
+        parser.add_argument('-t', '--translations', required=True)
+        parser.add_argument('-i', '--input', required=True)
+        parser.add_argument('-o', '--output', required=True)
+        parser.add_argument('-k', '--keep')
         args = vars(parser.parse_args(sys.argv[2:]))
 
         translations = read_translations(args['translations'])
+
+        file_keep = None
+        if args['keep'] is not None:
+            file_keep = open(args['keep'], 'w')
+
         with open(args['input']) as file_input, open(args['output'], 'w') as file_output:
             SamHeaderSequencesRenamerUtils.get_header_translation(
                 file_input,
                 file_output,
-                translations
+                translations,
+                file_keep
             )
