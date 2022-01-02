@@ -54,6 +54,8 @@ The commands are:
         parser.add_argument('-i', '--input', required=True)
         parser.add_argument('-o', '--output', required=True)
         parser.add_argument('-k', '--keep')
+        parser.add_argument('-u', '--keepUntrustworthy', dest='keepUntrustworthy', action='store_true')
+        parser.set_defaults(keepUntrustworthy=False)
         args = vars(parser.parse_args(sys.argv[2:]))
 
         translations = read_translations(args['translations'])

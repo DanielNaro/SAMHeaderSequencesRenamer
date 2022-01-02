@@ -30,7 +30,7 @@ class SamHeaderSequencesRenamerUtils:
             return sequence_name, False
 
     @staticmethod
-    def get_line_translation(line: str, translations: Dict[str, str]) -> Tuple[str, Optional[str]]:
+    def get_line_translation(line: str, translations: Dict[str, str], keep: bool = False) -> Tuple[str, Optional[str]]:
         if not line.startswith('@SQ'):
             return line, None
         elements = line.split()
@@ -41,7 +41,8 @@ class SamHeaderSequencesRenamerUtils:
                 new_sequence_name, trustworthy = SamHeaderSequencesRenamerUtils.get_translation(elements[i][3:],
                                                                                                 translations)
                 if not trustworthy:
-                    return '', None
+                    if not keep:
+                        return '', None
                 elements[i] = "SN:" + new_sequence_name
         if new_sequence_name is None:
             print("line \"" + line + "\" is missing sequence name", file=sys.stderr)
@@ -53,11 +54,15 @@ class SamHeaderSequencesRenamerUtils:
             file_input: TextIO,
             file_output: TextIO,
             translations: Dict[str, str],
-            to_keep_file: Optional[TextIO] = None):
+            to_keep_file: Optional[TextIO] = None,
+            keep_untrusworthy_translations: bool = False):
         to_keep = []
         for line in file_input:
-            new_line, optional_sequence_to_keep = SamHeaderSequencesRenamerUtils.get_line_translation(line,
-                                                                                                      translations)
+            new_line, optional_sequence_to_keep = SamHeaderSequencesRenamerUtils.get_line_translation(
+                line,
+                translations,
+                keep_untrusworthy_translations
+            )
             file_output.write(new_line)
             if optional_sequence_to_keep is not None:
                 to_keep.append(optional_sequence_to_keep)
