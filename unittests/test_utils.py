@@ -1,13 +1,13 @@
 from unittest import TestCase
 
-from utils import read_translations, read_available_sequences
+from utils import read_translations, read_available_sequences, simplify_translation_info
 
 
 class Test(TestCase):
     def test_read_translations(self):
         self.assertDictEqual(
             {'1': 'chr1', '2': '2'},
-            read_translations('TestMaterial/test_translations.txt')
+            simplify_translation_info(read_translations('TestMaterial/test_translations.txt'))
         )
 
     def test_read_available_sequences(self):

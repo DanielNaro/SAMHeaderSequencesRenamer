@@ -25,28 +25,28 @@ class TestSamHeaderSequencesRenamer(TestCase):
 
     def test_get_translation(self):
         self.assertEqual(
-            ("chr2", True),
+            ("chr2", None, True),
             SamHeaderSequencesRenamerUtils.get_translation(
                 '2',
-                {'2': 'chr2'}
+                {'2': ('chr2', None)}
             )
         )
         self.assertEqual(
-            ("22", False),
+            ("22", None, False),
             SamHeaderSequencesRenamerUtils.get_translation(
                 '22',
-                {'2': 'chr2'}
+                {'2': ('chr2', None)}
             )
         )
 
     def test_get_line_translation(self):
         line = "@HD	VN:1.5	SO:coordinate\n"
-        self.assertEqual((line, None), SamHeaderSequencesRenamerUtils.get_line_translation(line, {'2': 'chr2'}))
+        self.assertEqual((line, None), SamHeaderSequencesRenamerUtils.get_line_translation(line, {'2': ('chr2', None)}))
 
         line_sq = "@SQ	SN:2	LN:243199373\n"
         expected_line_sq = "@SQ	SN:chr2	LN:243199373\n"
         self.assertEqual((expected_line_sq, 'chr2'),
-                         SamHeaderSequencesRenamerUtils.get_line_translation(line_sq, {'2': 'chr2'}))
+                         SamHeaderSequencesRenamerUtils.get_line_translation(line_sq, {'2': ('chr2', None)}))
 
     def test_get_header_translation(self):
         translations = read_translations("TestMaterial/test_translations.txt")
